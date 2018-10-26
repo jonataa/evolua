@@ -5,6 +5,12 @@ class FizzBuzz
 
     const FIZZ_FACTOR = 3;
     const BUZZ_FACTOR = 5;
+    
+    private $dictionary = [
+        'isFizzBuzz' => 'fizzbuzz',
+        'isFizz'     => 'fizz',
+        'isBuzz'     => 'buzz',
+    ];
 
     /**
      * Translate number to FizzBuzz.
@@ -14,9 +20,11 @@ class FizzBuzz
      */
     public function translateNumber(int $number): string
     {
-        if ($this->isFizzBuzz($number)) return 'fizzbuzz';
-        if ($this->isFizz($number)) return 'fizz';
-        if ($this->isBuzz($number)) return 'buzz';    
+        foreach ($this->dictionary as $rule => $label) {
+            if (method_exists($this, $rule) && $this->$rule($number)) {
+                return $label;
+            }
+        }
 
         return (string) $number;
     }
